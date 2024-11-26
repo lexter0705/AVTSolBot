@@ -7,19 +7,18 @@ class Base(DeclarativeBase):
     pass
 
 
-class User(Base):
+class UserTable(Base):
     __tablename__ = 'user'
     id: Mapped[int] = mapped_column(primary_key=True)
     username: Mapped[str]
 
 
-class Wallet(Base):
+class WalletTable(Base):
     __tablename__ = 'wallet'
     id: Mapped[int] = mapped_column(primary_key=True)
     user_id: Mapped[int] = mapped_column(ForeignKey('user.id'))
-    address: Mapped[str]
-    secret_phrase: Mapped[str]
-    user: Mapped[User] = relationship(User, backref=backref("children", cascade="all,delete"))
+    private_key: Mapped[str]
+    user: Mapped[UserTable] = relationship(UserTable, backref=backref("children", cascade="all,delete"))
 
 
 if __name__ == '__main__':
