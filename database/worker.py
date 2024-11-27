@@ -1,14 +1,12 @@
 from typing import Type
-
 from database.creator import Base
 from sqlalchemy import create_engine, Executable
 from sqlalchemy import insert, select, delete, update
-from config.json_checker import get_data
 
 
 class DatabaseWorker:
-    def __init__(self, table: Type[Base]):
-        database_url = "sqlite:///" + get_data()["database_path"]
+    def __init__(self, table: Type[Base], database_path: str):
+        database_url = "sqlite:///" + database_path
         engine = create_engine(database_url)
         self.__connect = engine.connect()
         self.__table = table

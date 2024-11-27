@@ -1,4 +1,3 @@
-from config import json_checker
 from database.workers.wallet import WalletWorker
 from sol_interface.wallet_converter import WalletConverter
 from solders.bankrun import BanksClient
@@ -8,14 +7,15 @@ class Wallets:
     def __init__(self, user_id: int,
                  wallet_converter: WalletConverter,
                  wallet_worker: WalletWorker,
-                 client: BanksClient):
+                 client: BanksClient,
+                 token_for_buy_hex: str):
         self.__wallets_database_worker = wallet_worker
         self.__wallet_converter = wallet_converter
         self.__user_id = user_id
         self.__client = client
         self.__parse_wallets()
         self.__parse_main_wallet()
-        self.__token = json_checker.get_data()["token_for_buy"]
+        self.__token = token_for_buy_hex
 
     def __parse_wallets(self):
         wallets = self.__wallets_database_worker.get_user_not_main_wallets(self.__user_id)

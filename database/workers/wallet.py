@@ -4,8 +4,8 @@ from database.worker import DatabaseWorker
 
 
 class WalletWorker(DatabaseWorker):
-    def __init__(self):
-        super().__init__(WalletTable)
+    def __init__(self, database_path: str):
+        super().__init__(WalletTable, database_path)
 
     def get_user_not_main_wallets(self, user_id: int) -> list[str]:
         request = select(WalletTable).where(WalletTable.user_id == user_id)

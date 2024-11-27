@@ -29,7 +29,8 @@ class Wallet:
         return VersionedTransaction(message, [self.__key_pair])
 
     def buy_token(self, token: str, amount: int) -> VersionedTransaction:
-        quote = self.__quote_request.request("So11111111111111111111111111111111111111112", token, amount)
+        solana_hex = "So11111111111111111111111111111111111111112"
+        quote = self.__quote_request.request(solana_hex, token, amount)
         transaction = bytes(self.__transaction_request.request(100, quote, str(self.__key_pair.pubkey()), False))
         return VersionedTransaction.from_bytes(transaction)
 

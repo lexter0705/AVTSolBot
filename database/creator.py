@@ -22,6 +22,6 @@ class WalletTable(Base):
     user: Mapped[UserTable] = relationship(UserTable, backref=backref("children", cascade="all,delete"))
 
 
-if __name__ == '__main__':
-    engine = create_engine("sqlite:///main.db")
+def create_database(path: str):
+    engine = create_engine("sqlite:///" + path)
     Base.metadata.create_all(engine)
