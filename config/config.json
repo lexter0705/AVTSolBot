@@ -1,6 +1,7 @@
 {
   "database_path": "database/main.db",
   "bot_token": "",
+  "token_for_buy": "",
   "get_quote_link": "https://https://api.fluxbeam.xyz/v1/quote",
   "get_transaction_link": "https://https://api.fluxbeam.xyz/v1/swap/transaction"
 }

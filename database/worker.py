@@ -32,3 +32,6 @@ class DatabaseWorker:
     def commit(self, request: Executable):
         self.__connect.execute(request)
         self.__connect.commit()
+
+    def get_connect(self):
+        return self.__connect

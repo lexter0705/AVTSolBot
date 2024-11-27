@@ -18,6 +18,7 @@ class WalletTable(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     user_id: Mapped[int] = mapped_column(ForeignKey('user.id'))
     private_key: Mapped[str]
+    is_main: Mapped[bool]
     user: Mapped[UserTable] = relationship(UserTable, backref=backref("children", cascade="all,delete"))
 
 
