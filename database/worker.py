@@ -31,5 +31,6 @@ class DatabaseWorker:
         self.__connect.execute(request)
         self.__connect.commit()
 
-    def get_connect(self):
+    @property
+    def connect(self):
         return self.__connect
