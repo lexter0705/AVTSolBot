@@ -7,6 +7,6 @@ class TransactionQuoteRequest(Request):
         super().__init__(link)
 
     def request(self, input_token: str, output_token: str, amount: int) -> dict:
-        response = requests.post(self.get_link(), data={"inputMint": input_token, "amount": amount,
-                                                    "outputMint": output_token})
+        request_stroke = f"?inputMint={input_token}&outputMint={output_token}&amount={amount}"
+        response = requests.get(self.link+request_stroke)
         return response.json()

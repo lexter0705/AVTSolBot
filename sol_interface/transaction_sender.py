@@ -1,6 +1,4 @@
 from solana.rpc.async_api import AsyncClient
-from solana.rpc.types import TxOpts
-
 from sol_interface import Wallets
 
 
@@ -30,6 +28,5 @@ class AsyncTransactionSender:
 
     async def buy_token_on_wallets(self):
         for wallet in self.__wallets:
-            message = wallet.buy_token(self.__token, (await self.__client.get_balance(wallet.public_key)).value,
-                                       self.__fee)
+            message = wallet.buy_token(self.__token, 3000000,100)
             await self.__client.send_transaction(message)

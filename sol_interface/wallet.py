@@ -5,7 +5,7 @@ from solders.system_program import transfer, TransferParams
 from solders.transaction import VersionedTransaction, Transaction
 from sol_interface.requests.quote import TransactionQuoteRequest
 from sol_interface.requests.transaction import TransactionRequest
-
+import base64
 
 class Wallet:
     def __init__(self, key_pair: keypair.Keypair,
@@ -22,11 +22,12 @@ class Wallet:
         message = Message(payer=self.__key_pair.pubkey(), instructions=[instruction])
         return Transaction([self.__key_pair], message,  blockhash)
 
-    def buy_token(self, token: str, amount: int, fee: int) -> Transaction:
+    def buy_token(self, token: str, amount: int, fee: int) -> VersionedTransaction:
         solana_hex = "So11111111111111111111111111111111111111112"
         quote = self.__quote_request.request(solana_hex, token, amount)
-        transaction = bytes(self.__transaction_request.request(fee, quote, str(self.__key_pair.pubkey()), False))
-        return Transaction.from_bytes(transaction)
+        transaction: str = self.__transaction_request.request(fee, quote, str(self.__key_pair.pubkey()), True)["transaction"]
+        transaction_in_bytes = base64.b64decode(transaction)
+        return VersionedTransaction.from_bytes(transaction_in_bytes)
 
     @property
     def public_key(self):

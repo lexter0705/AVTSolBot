@@ -8,7 +8,7 @@ class TransactionRequest(Request):
 
     def request(self, priority_fee_lamports: int, quote: dict, public_key: str,
                 warp_and_unwrap_sol: bool) -> dict:
-        data = {"priorityFeeLamports": priority_fee_lamports, "quote": quote, "userPublicKey": public_key,
-                "warpAndUnwrapSol": warp_and_unwrap_sol}
-        response = requests.post(self.get_link(), data=data)
+        data = {"priorityFeeLamports": priority_fee_lamports, "quote": quote["quote"], "userPublicKey": public_key,
+                "wrapAndUnwrapSol": warp_and_unwrap_sol}
+        response = requests.post(self.link, json=data)
         return response.json()

@@ -9,5 +9,6 @@ class Request(abc.ABC):
     def request(self, *args) -> dict:
         pass
 
-    def get_link(self):
+    @property
+    def link(self):
         return self.__link
