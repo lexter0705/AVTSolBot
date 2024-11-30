@@ -1,7 +1,7 @@
 from solders.keypair import Keypair
 from sol_interface.requests.quote import TransactionQuoteRequest
 from sol_interface.requests.transaction import TransactionRequest
-from sol_interface.wallet import Wallet
+from sol_interface.wallets.wallet import Wallet
 
 
 class WalletConverter:

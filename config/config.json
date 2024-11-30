@@ -1,7 +1,8 @@
 {
   "database_path": "database/main.db",
   "bot_token": "",
-  "token_for_buy": "",
+  "token_for_buy": "Cz8VBgwj3jJ1C8QZNyzCLvQdiV7X241o5raMkWQVYrBH",
   "get_quote_link": "https://api.fluxbeam.xyz/v1/quote",
-  "get_transaction_link": "https://api.fluxbeam.xyz/v1/swap/transaction"
+  "get_transaction_link": "https://api.fluxbeam.xyz/v1/swap/transaction",
+  "rpc_url": "https://api.devnet.solana.com"
 }

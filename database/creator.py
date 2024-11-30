@@ -14,7 +14,7 @@ class UserTable(Base):
 
 
 class WalletTable(Base):
-    __tablename__ = 'wallet'
+    __tablename__ = 'wallets'
     id: Mapped[int] = mapped_column(primary_key=True)
     user_id: Mapped[int] = mapped_column(ForeignKey('user.id'))
     private_key: Mapped[str]
@@ -25,3 +25,7 @@ class WalletTable(Base):
 def create_database(path: str):
     engine = create_engine("sqlite:///" + path)
     Base.metadata.create_all(engine)
+
+
+if __name__ == "__main__":
+    create_database("main.db")

@@ -1,4 +1,5 @@
 from solana.rpc.async_api import AsyncClient
+
 from sol_interface import Wallets
 
 
@@ -9,6 +10,10 @@ class AsyncTransactionSender:
         self.__client = client
         self.__fee = fee
         self.__token = token
+
+    @property
+    def wallets(self) -> Wallets:
+        return self.__wallets
 
     async def send_from_all_to_main(self):
         for wallet in self.__wallets:
@@ -28,5 +33,5 @@ class AsyncTransactionSender:
 
     async def buy_token_on_wallets(self):
         for wallet in self.__wallets:
-            message = wallet.buy_token(self.__token, 3000000,100)
+            message = wallet.buy_token(self.__token, 3000000, 100)
             await self.__client.send_transaction(message)

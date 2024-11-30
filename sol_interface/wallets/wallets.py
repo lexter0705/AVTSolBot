@@ -1,6 +1,6 @@
 from database import WalletWorker
-from sol_interface.wallet import Wallet
-from sol_interface.wallet_converter import WalletConverter
+from sol_interface.wallets.wallet import Wallet
+from sol_interface.wallets.wallet_converter import WalletConverter
 
 
 class Wallets:
@@ -18,6 +18,10 @@ class Wallets:
     def __len__(self) -> int:
         return len(self.__wallets)
 
+    @property
+    def main_wallet(self) -> Wallet:
+        return self.__main_wallet
+
     def __parse_wallets(self):
         wallets = self.__wallets_database_worker.get_user_not_main_wallets(self.__user_id)
         self.__wallets = []
@@ -31,7 +35,3 @@ class Wallets:
     def reload_from_db(self):
         self.__parse_main_wallet()
         self.__parse_wallets()
-
-    @property
-    def main_wallet(self):
-        return self.__main_wallet
