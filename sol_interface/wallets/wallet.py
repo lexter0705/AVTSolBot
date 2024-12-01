@@ -2,6 +2,7 @@ import base64
 
 from solders import keypair, pubkey
 from solders.hash import Hash
+from solders.keypair import Keypair
 from solders.message import Message
 from solders.pubkey import Pubkey
 from solders.system_program import transfer, TransferParams
@@ -23,6 +24,10 @@ class Wallet:
     def public_key(self) -> Pubkey:
         return self.__key_pair.pubkey()
 
+    @property
+    def private_key(self) -> Keypair:
+        return self.__key_pair
+
     def send_sol(self, account_to: pubkey.Pubkey, count_lamports: int, blockhash: Hash) -> Transaction:
         instruction = transfer(TransferParams(from_pubkey=self.__key_pair.pubkey(),
                                               to_pubkey=account_to,
@@ -33,7 +38,7 @@ class Wallet:
     def buy_token(self, token: str, amount: int, fee: int) -> VersionedTransaction:
         solana_hex = "So11111111111111111111111111111111111111112"
         quote = self.__quote_request.request(solana_hex, token, amount)
-        transaction: str = self.__transaction_request.request(fee, quote, str(self.__key_pair.pubkey()), True)[
-            "transaction"]
+        key = str(self.__key_pair.pubkey())
+        transaction: str = self.__transaction_request.request(fee, quote, key, True)["transaction"]
         transaction_in_bytes = base64.b64decode(transaction)
         return VersionedTransaction.from_bytes(transaction_in_bytes)

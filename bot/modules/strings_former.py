@@ -13,14 +13,15 @@ class StringsFormer(object):
 
     @form_string.register(Wallet)
     async def _(self, wallet: Wallet) -> str:
-        public_key = wallet.public_key
-        balance = (await self.__client.get_balance(public_key)).value
-        return f"*Account:*\n{public_key}\n*Balance:* {balance}"
+        public_key = wallet.private_key.pubkey()
+        private_key = wallet.private_key
+        balance = (await self.__client.get_balance(public_key)).value / 1000000000
+        return f"*Account:*\n{public_key}\n*Private key:*\n{private_key}\n*Balance:* {balance}"
 
     @form_string.register(Wallets)
     async def _(self, wallets: Wallets) -> str:
         returned_string = ""
         for i in wallets:
-            returned_string += self.form_string(i)
-            returned_string += "-------------" + "\n"
+            returned_string += await self.form_string(i)
+            returned_string += "\n-------------\n"
         return returned_string

@@ -24,17 +24,14 @@ class SolanaWorker:
             return
 
         wallets = Wallets(user_id, self.__wallet_converter, self.__wallet_worker)
-        self.__user_senders[user_id] = AsyncTransactionSender(wallets, self.__client, 100, "")
+        self.__user_senders[user_id] = AsyncTransactionSender(wallets, self.__client, "", 1000000)
 
     def get_user_sender(self, user_id: int) -> AsyncTransactionSender:
-        if user_id not in self.__user_senders.keys():
-            self.add_user(user_id)
-
         return self.__user_senders[user_id]
 
-    async def get_user_balance(self, user_id: int) -> int:
-        if user_id not in self.__user_senders.keys():
-            self.add_user(user_id)
+    def reload_wallets(self, user_id: int):
+        self.__user_senders[user_id].reload_wallets()
 
+    async def get_user_balance(self, user_id: int) -> int:
         pubkey = self.__user_senders[user_id].wallets.main_wallet.public_key
         return (await self.__client.get_balance(pubkey)).value
