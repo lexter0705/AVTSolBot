@@ -6,8 +6,9 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from bot.modules.main_database import BotDatabase
 from bot.modules.solana_worker import SolanaWorker
 from bot.modules.strings_former import StringsFormer
+from config import json_checker
 
-bot = Bot(token='7004388668:AAEEfvIXpuNwNemcJlt1TaEEZOzD7rwX4tQ',
+bot = Bot(token=json_checker.get_data()["bot_token"],
           default=DefaultBotProperties(parse_mode=ParseMode.MARKDOWN))
 router = Router()
 database = BotDatabase()

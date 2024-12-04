@@ -6,7 +6,7 @@ class Request(abc.ABC):
         self.__link = link
 
     @abc.abstractmethod
-    def request(self, *args) -> dict:
+    def request(self, *args):
         pass
 
     @property

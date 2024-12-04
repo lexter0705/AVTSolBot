@@ -3,6 +3,7 @@ from solana.rpc.async_api import AsyncClient
 from config import json_checker
 from database import WalletWorker
 from sol_interface import TransactionQuoteRequest, TransactionRequest, WalletConverter, AsyncTransactionSender, Wallets
+from sol_interface.requests.buy import TokensBuyRequest
 
 
 class SolanaWorker:
@@ -11,7 +12,8 @@ class SolanaWorker:
         self.__user_senders: dict[int, AsyncTransactionSender] = {}
         self.__client = AsyncClient(data["rpc_url"])
         self.__wallet_converter = WalletConverter(TransactionQuoteRequest(data["get_quote_link"]),
-                                                  TransactionRequest("get_transaction_link"))
+                                                  TransactionRequest(data["get_transaction_link"]),
+                                                  TokensBuyRequest(data["rpc_url"], data["get_buy_link"]))
         self.__wallet_worker = WalletWorker(data["database_path"])
         self.__token = data["token_for_buy"]
 
@@ -24,7 +26,7 @@ class SolanaWorker:
             return
 
         wallets = Wallets(user_id, self.__wallet_converter, self.__wallet_worker)
-        self.__user_senders[user_id] = AsyncTransactionSender(wallets, self.__client, "", 1000000)
+        self.__user_senders[user_id] = AsyncTransactionSender(wallets, self.__client, self.__token, 1000000)
 
     def get_user_sender(self, user_id: int) -> AsyncTransactionSender:
         return self.__user_senders[user_id]

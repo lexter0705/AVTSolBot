@@ -1,13 +1,11 @@
-import base64
-
 from solders import keypair, pubkey
 from solders.hash import Hash
 from solders.keypair import Keypair
 from solders.message import Message
 from solders.pubkey import Pubkey
 from solders.system_program import transfer, TransferParams
-from solders.transaction import VersionedTransaction, Transaction
-
+from solders.transaction import Transaction
+from sol_interface.requests.buy import TokensBuyRequest
 from sol_interface.requests.quote import TransactionQuoteRequest
 from sol_interface.requests.transaction import TransactionRequest
 
@@ -15,10 +13,12 @@ from sol_interface.requests.transaction import TransactionRequest
 class Wallet:
     def __init__(self, key_pair: keypair.Keypair,
                  quote_request: TransactionQuoteRequest,
-                 transaction_request: TransactionRequest):
+                 transaction_request: TransactionRequest,
+                 buy_transaction_request: TokensBuyRequest):
         self.__key_pair = key_pair
         self.__quote_request = quote_request
         self.__transaction_request = transaction_request
+        self.__buy_transaction_request = buy_transaction_request
 
     @property
     def public_key(self) -> Pubkey:
@@ -35,10 +35,9 @@ class Wallet:
         message = Message(payer=self.__key_pair.pubkey(), instructions=[instruction])
         return Transaction([self.__key_pair], message, blockhash)
 
-    def buy_token(self, token: str, amount: int, fee: int) -> VersionedTransaction:
+    def buy_token(self, token: str, amount: int, fee: int) -> str:
         solana_hex = "So11111111111111111111111111111111111111112"
         quote = self.__quote_request.request(solana_hex, token, amount)
         key = str(self.__key_pair.pubkey())
-        transaction: str = self.__transaction_request.request(fee, quote, key, True)["transaction"]
-        transaction_in_bytes = base64.b64decode(transaction)
-        return VersionedTransaction.from_bytes(transaction_in_bytes)
+        instruction_string: str = self.__transaction_request.request(fee, quote, key, True)["transaction"]
+        self.__buy_transaction_request.request(instruction_string, str(self.__key_pair))
