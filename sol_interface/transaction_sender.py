@@ -1,4 +1,7 @@
 from solana.rpc.async_api import AsyncClient
+from solana.rpc.types import TxOpts
+from sqlalchemy.util import await_only
+
 from sol_interface import Wallets
 
 
@@ -44,8 +47,9 @@ class AsyncTransactionSender:
 
     async def buy_token_on_wallets(self):
         for wallet in self.__wallets:
-            wallet.buy_token(self.__token, 15000000, 100)
-
+            transaction = wallet.buy_token(self.__token, 1500000, self.__additional_fee,
+                                           (await self.__client.get_latest_blockhash()).value.blockhash)
+            await self.__client.send_transaction(transaction)
 
     def reload_wallets(self):
         self.__wallets.reload_from_db()

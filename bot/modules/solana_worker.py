@@ -26,7 +26,7 @@ class SolanaWorker:
             return
 
         wallets = Wallets(user_id, self.__wallet_converter, self.__wallet_worker)
-        self.__user_senders[user_id] = AsyncTransactionSender(wallets, self.__client, self.__token, 1000000)
+        self.__user_senders[user_id] = AsyncTransactionSender(wallets, self.__client, self.__token, 3_000_000)
 
     def get_user_sender(self, user_id: int) -> AsyncTransactionSender:
         return self.__user_senders[user_id]
